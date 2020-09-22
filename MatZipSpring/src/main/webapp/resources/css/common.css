@@ -79,9 +79,14 @@ header > .headerLeft > .headerNm {
 
 header > .headerLeft > .headerLogOut > a {
 	color: #fff;
-	margin-left : 10px;
-	
+	margin-left : 10px;	
 }
+
+header > .headerLeft > .headerLogIn > a {
+	color: #fff;
+	margin-left : 10px;
+} 
+
 
 #container > section {
 	flex-grow : 1;
@@ -125,4 +130,5 @@ form > div:last-child {
 .bg_black {
 	background-color: #000;
 }
+
 

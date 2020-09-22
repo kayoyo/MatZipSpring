@@ -66,10 +66,20 @@ public class RestController {
 	}
 	
 	@RequestMapping("/detail")
-	public String detail() {
+	public String detail(RestPARAM param, Model model) {
+		
+		RestDMI data = service.selDetailRest(param);
+		
+		model.addAttribute("data", data);
+		model.addAttribute(Const.TITLE, data.getNm());
+		model.addAttribute(Const.VIEW, "rest/restDetail");
 		
 		return ViewRef.TEMP_MEUE_TEMP;	
 	}
+	
+	
+	
+	
 	
 	
 	

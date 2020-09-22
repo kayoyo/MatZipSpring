@@ -32,12 +32,17 @@
 			<div class="headerLogOut"><a href="/user/logout">로그아웃</a></div>
 		</c:if>
 		<c:if test="${loginUser == null}">
-			<div class="headerLogin"><a href="/user/login">로그인</a></div>
+			<div class="headerLogIn"><a href="/user/login">로그인</a></div>
 		</c:if>
 		</div>
 		<div class="headerRight">
 			<a class="area" href="/rest/map">지도</a>
-			<a class="reg" href="/rest/restReg">등록</a>
+			<c:if test="${loginUser != null}">
+				<a class="reg" href="/rest/restReg">등록</a>
+			</c:if>
+			<c:if test="${loginUser == null}">
+				<a class="reg" href="#" onclick="alert('로그인이 필요합니다😍')">등록</a>
+			</c:if>
 			<a class="zzim" href="/user/restFavolate">좋아요</a>
 		</div>
 	</header>

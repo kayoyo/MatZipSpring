@@ -14,4 +14,25 @@
 	VALUES 
 	(#{i_user}, #{nm}, #{addr}, #{lat}, #{lng}, #{cd_category})
 	</insert>
+	
+	<select id="selDetailRest" parameterType="RestPARAM" resultType="RestDMI">
+		SELECT A.i_rest, A.nm, A.lat, A.lng, A.addr, A.i_user, A.hits
+		, ifnull(B.val, '') as cd_category_nm
+		, C.nm as user_nm
+		, ifnull(D.cnt, 0) as cnt_favorite
+		FROM t_restaurant A
+		LEFT JOIN c_code_d B
+		ON A.cd_category = B.cd
+		AND B.i_m = 1
+		LEFT JOIN t_user C
+		ON A.i_user = C.i_user
+		LEFT JOIN(
+		SELECT i_rest, COUNT(i_rest) as cnt 
+		FROM t_user_favorite
+		WHERE i_rest = #{i_rest}
+		GROUP BY i_rest
+		)D
+		ON A.i_rest = D.i_rest
+		WHERE A.i_rest = #{i_rest}
+	</select>
 </mapper>
