@@ -4,10 +4,12 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<context:property-placeholder location="classpath:config.properties"/> <!-- classpath == src/main/resources 외부 설정 프로퍼티 사용 경로 -->
@@ -48,11 +50,24 @@
 
 	<!-- mapper 검색 -->
 	<mybatis-spring:scan base-package="com.koreait.matzip" />
+	
+	<!-- 트랜잭션 설정 -->
+	<beans:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<beans:property name="dataSource" ref="dataSource"/>
+	</beans:bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
 	<interceptors>
 		<interceptor>
 			<mapping path="/**"/>
 			<beans:bean class="com.koreait.matzip.LogincheckInterceptors"/>
 		</interceptor>
 	</interceptors>
+	
+	<!-- 파일 업로드 5MB -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="5242880"/> 
+	</beans:bean>
 
 </beans:beans>

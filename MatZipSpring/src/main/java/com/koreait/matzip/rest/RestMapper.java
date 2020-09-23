@@ -6,15 +6,27 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.koreait.matzip.rest.model.RestDMI;
 import com.koreait.matzip.rest.model.RestPARAM;
+import com.koreait.matzip.rest.model.RestRecMenuVO;
 
 @Mapper
 public interface RestMapper {
 	
-	public List<RestDMI> selRestList(RestPARAM param);
+	List<RestDMI> selRestList(RestPARAM param);
+	
+	List<RestRecMenuVO> selRecMenuList(RestPARAM param);
 
-	public int insRest(RestPARAM param);
+	int insRest(RestPARAM param);
 	
-	public RestDMI selDetailRest(RestPARAM param);
+	int insRestRecMenu(RestRecMenuVO vo);
 	
+	RestDMI selDetailRest(RestPARAM param);
+
+	int delRestRecMenu(RestPARAM param);
+	
+	int delRestMenu(RestPARAM param);
+	
+	int delRest(RestPARAM param);
+	
+	int delRecMenu(RestPARAM param);
 	
 }

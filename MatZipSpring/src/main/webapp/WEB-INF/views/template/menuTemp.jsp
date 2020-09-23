@@ -38,7 +38,7 @@
 		<div class="headerRight">
 			<a class="area" href="/rest/map">지도</a>
 			<c:if test="${loginUser != null}">
-				<a class="reg" href="/rest/restReg">등록</a>
+				<a class="reg" href="/rest/reg">등록</a>
 			</c:if>
 			<c:if test="${loginUser == null}">
 				<a class="reg" href="#" onclick="alert('로그인이 필요합니다😍')">등록</a>

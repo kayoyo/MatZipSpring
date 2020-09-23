@@ -1,6 +1,8 @@
-package com.koreait.matzip.model;
+package com.koreait.matzip.rest.model;
 
-public class RestaurantRecommendFoodVO extends RestaurantVO{
+import com.koreait.matzip.model.RestaurantVO;
+
+public class RestRecMenuVO extends RestaurantVO{
 	
 	private int i_rest;
 	private int seq;
