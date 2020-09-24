@@ -15,14 +15,14 @@ public class LogincheckInterceptors extends HandlerInterceptorAdapter {
 		
 		String uri = request.getRequestURI();
 		String[] uriArr = uri.split("/");
-		System.out.println("uri : " + uri);
+		//System.out.println("uri : " + uri);
+		//System.out.println("uriArr.length : " + uriArr.length);
 		
-		System.out.println("uriArr.length : " + uriArr.length);
-		if(uriArr[1].equals("res")) { //js, css, img 걸러냄
+		if(uri.equals("/")) {
 			return true;
-		} else if(uriArr.length < 3) { //주소가 이상한 경우
-			return false;
-		}
+		} else if(uriArr[1].equals("res")) { //js, css, img 걸러냄
+			return true;
+		} 
 		
 		System.out.println("인터셉터");
 		boolean isLogOut = SecurityUtils.isLogOut(request);

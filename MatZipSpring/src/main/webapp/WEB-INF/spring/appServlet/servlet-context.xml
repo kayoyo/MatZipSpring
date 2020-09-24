@@ -63,6 +63,11 @@
 			<mapping path="/**"/>
 			<beans:bean class="com.koreait.matzip.LogincheckInterceptors"/>
 		</interceptor>
+	
+		<interceptor>
+			<mapping path="/rest/*"/>
+			<beans:bean class="com.koreait.matzip.RestInterceptors"/>
+		</interceptor>
 	</interceptors>
 	
 	<!-- 파일 업로드 5MB -->

@@ -12,21 +12,18 @@ import com.koreait.matzip.rest.model.RestRecMenuVO;
 public interface RestMapper {
 	
 	List<RestDMI> selRestList(RestPARAM param);
-	
 	List<RestRecMenuVO> selRecMenuList(RestPARAM param);
-
-	int insRest(RestPARAM param);
-	
-	int insRestRecMenu(RestRecMenuVO vo);
-	
 	RestDMI selDetailRest(RestPARAM param);
-
+	List<RestRecMenuVO> selRestMenus(RestPARAM param);
+	int selRestChkUser(int i_rest);
+	
+	int insRest(RestPARAM param);
+	int insRestRecMenu(RestRecMenuVO param);
+	int insMenus(RestRecMenuVO param);
+	
 	int delRestRecMenu(RestPARAM param);
-	
 	int delRestMenu(RestPARAM param);
-	
 	int delRest(RestPARAM param);
 	
-	int delRecMenu(RestPARAM param);
 	
 }

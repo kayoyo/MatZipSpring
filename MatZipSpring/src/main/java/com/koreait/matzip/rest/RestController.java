@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +19,7 @@ import com.koreait.matzip.Const;
 import com.koreait.matzip.SecurityUtils;
 import com.koreait.matzip.ViewRef;
 import com.koreait.matzip.rest.model.RestDMI;
+import com.koreait.matzip.rest.model.RestFile;
 import com.koreait.matzip.rest.model.RestPARAM;
 import com.koreait.matzip.rest.model.RestRecMenuVO;
 
@@ -38,10 +40,10 @@ public class RestController {
 	@RequestMapping(value="/ajaxGetList", produces="application/json; charset=UTF-8")
 	@ResponseBody 
 	public List<RestDMI> ajaxGetList(RestPARAM param) {
-		System.out.println("sw_lat : " + param.getSw_lat());
-		System.out.println("sw_lng : " + param.getSw_lng());
-		System.out.println("ne_lat : " + param.getNe_lat());
-		System.out.println("ne_lng : " + param.getNe_lng());
+//		System.out.println("sw_lat : " + param.getSw_lat());
+//		System.out.println("sw_lng : " + param.getSw_lng());
+//		System.out.println("ne_lat : " + param.getNe_lat());
+//		System.out.println("ne_lng : " + param.getNe_lng());
 		
 		return service.selRestList(param);
 	}
@@ -79,10 +81,11 @@ public class RestController {
 		//변화하는 값만 넣어줌
 		
 		List<RestRecMenuVO> recMenuList = service.selRecMenuList(param);
-		String[] cssList = {"restaurant"};
+		String[] css = {"restaurant"};
 		
+		model.addAttribute("menuList", service.selRestMenus(param));
 		model.addAttribute("recMenuList", recMenuList);
-		model.addAttribute("css", cssList);
+		model.addAttribute("css", css);
 		model.addAttribute("data", data);
 		model.addAttribute(Const.TITLE, data.getNm());
 		model.addAttribute(Const.VIEW, "rest/restDetail");
@@ -125,12 +128,24 @@ public class RestController {
 		String path = "/resources/img/rest/" + param.getI_user() + "/rec_menu/"; //파일 저장 경로
 		String realPath = hs.getServletContext().getRealPath(path);
 		param.setI_user(SecurityUtils.getLoginUserPk(hs)); //로그인 유저 정보 담기
-		return service.delRecMenu(param);
+		return service.delRecMenu(param, realPath);
 	}
 	
+	@RequestMapping("/menus")
+	public String menus(@ModelAttribute RestFile param, HttpSession hs, RedirectAttributes ra) {
+		
+		int i_user = SecurityUtils.getLoginUserPk(hs);
+		//System.out.println("i_rest : " + param.getI_rest());
+		
+		int result = service.insMenus(param, i_user);
+				
+		ra.addAttribute("i_rest", param.getI_rest());
+		return "redirect:/rest/detail";
 	
 	
 	
 	
+	
+	}
 
 }

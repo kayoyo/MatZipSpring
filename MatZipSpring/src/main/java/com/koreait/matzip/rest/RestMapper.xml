@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.koreait.matzip.rest.RestMapper">
+	
+	<select id="selRestChkUser" parameterType="Integer" resultType="Integer">
+	SELECT i_user FROM t_restaurant WHERE i_rest = #{i_rest} 
+	</select>
+	
+	<select id="selRestMenus" parameterType="RestPARAM" resultType="RestRecMenuVO">
+	SELECT A.seq, A.menu_pic
+	FROM t_restaurant_menu A
+	WHERE A.i_rest = #{i_rest}
+	<if test="seq > 0">
+	AND A.seq = #{seq}
+	</if>
+	</select>
+	
 	<select id="selRestList" parameterType="RestPARAM" resultType="RestDMI">
 	SELECT i_rest, nm, lat, lng 
 	FROM t_restaurant 
@@ -55,6 +69,14 @@
 	(i_rest, seq, menu_nm, menu_price, menu_pic) 
 	SELECT #{i_rest}, ifnull(max(seq), 0) + 1, #{menu_nm}, #{menu_price}, #{menu_pic}
 	FROM t_restaurant_recommend_menu
+	WHERE i_rest = #{i_rest}
+	</insert>
+	
+	<insert id="insMenus" parameterType="RestRecMenuVO">
+	INSERT INTO t_restaurant_menu
+	(i_rest, seq, menu_pic)
+	SELECT #{i_rest}, ifnull(max(seq), 0) + 1, #{menu_pic}
+	FROM t_restaurant_menu
 	WHERE i_rest = #{i_rest}
 	</insert>
 	
