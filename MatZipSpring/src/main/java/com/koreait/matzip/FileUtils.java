@@ -42,5 +42,13 @@ public class FileUtils {
 		return saveFileNm;
 		
 	}
+	
+	public static boolean delFile(String path) {
+		File file = new File(path);
+			if(file.exists()) {
+				return file.delete();
+			}
+			return false;
+	}
 
 }

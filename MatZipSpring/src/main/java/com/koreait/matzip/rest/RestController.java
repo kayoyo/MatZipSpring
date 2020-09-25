@@ -81,9 +81,9 @@ public class RestController {
 		//변화하는 값만 넣어줌
 		
 		List<RestRecMenuVO> recMenuList = service.selRecMenuList(param);
-		String[] css = {"restaurant"};
+		String[] css = {"restaurant", "swiper-bundle.min"};
 		
-		model.addAttribute("menuList", service.selRestMenus(param));
+		//model.addAttribute("menuList", service.selRestMenus(param));
 		model.addAttribute("recMenuList", recMenuList);
 		model.addAttribute("css", css);
 		model.addAttribute("data", data);
@@ -91,6 +91,11 @@ public class RestController {
 		model.addAttribute(Const.VIEW, "rest/restDetail");
 		
 		return ViewRef.TEMP_MEUE_TEMP;	
+	}
+	@RequestMapping("/ajaxSelMenuList")
+	@ResponseBody 
+	public List<RestRecMenuVO> ajaxSelMenuList(RestPARAM param) {
+		return service.selRestMenus(param);
 	}
 	
 	@RequestMapping("/del")
@@ -112,14 +117,6 @@ public class RestController {
 		return "redirect:/";	
 	}
 	
-	@RequestMapping(value="/recMenus", method=RequestMethod.POST)
-	public String recMenus(MultipartHttpServletRequest mReq, RedirectAttributes ra) {
-			
-		int i_rest = service.insRecMenus(mReq);
-		
-		ra.addAttribute("i_rest", i_rest); // "redirect:/rest/detail?i_rest=" + i_rest 와 같다
-		return "redirect:/rest/detail";
-	}
 	
 	@RequestMapping("/ajaxDelRecMenu")
 	@ResponseBody
@@ -129,6 +126,21 @@ public class RestController {
 		String realPath = hs.getServletContext().getRealPath(path);
 		param.setI_user(SecurityUtils.getLoginUserPk(hs)); //로그인 유저 정보 담기
 		return service.delRecMenu(param, realPath);
+	}
+	
+	@RequestMapping("/ajaxDelMenu")
+	@ResponseBody
+	public int ajaxDelMenu(RestPARAM param) { //i_rest, seq, menu_pic를 받게 됨
+		return service.delRestMenu(param);
+	}
+	
+	@RequestMapping(value="/recMenus", method=RequestMethod.POST)
+	public String recMenus(MultipartHttpServletRequest mReq, RedirectAttributes ra) {
+		
+		int i_rest = service.insRecMenus(mReq);
+		
+		ra.addAttribute("i_rest", i_rest); // "redirect:/rest/detail?i_rest=" + i_rest 와 같다
+		return "redirect:/rest/detail";
 	}
 	
 	@RequestMapping("/menus")

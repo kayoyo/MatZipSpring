@@ -68,17 +68,30 @@ public class RestService {
 	}
 
 	public int delRestMenu(RestPARAM param) {
-
-		return mapper.delRestMenu(param);
+		if(param.getMenu_pic() != null && !"".equals(param.getMenu_pic())) {
+			String path = Const.REALPATH + "/resources/img/rest/" + param.getI_rest() + "/menus/";
+			
+//			System.out.println(path);
+//			System.out.println(param.getI_rest());
+//			System.out.println(param.getSeq());
+//			System.out.println(param.getMenu_pic());
+			
+			if(FileUtils.delFile(path + param.getMenu_pic())) {
+				return mapper.delRestMenu(param);				
+			} else {
+				return Const.FAIL;
+			}
+		}
+		return mapper.delRestMenu(param); //파일이 없더라도 삭제는 되야 한다.
 	}
 
-	public int delRecMenu(RestPARAM param, String realpath) {
+	public int delRecMenu(RestPARAM param, String REALPATH) {
 		List<RestRecMenuVO> list = mapper.selRecMenuList(param);
 		if (list.size() == 1) { // 로그인 유저가 쓴 글이 맞으며, 삭제할 정보가 들어 있다.
 			RestRecMenuVO item = list.get(0); // index는 1개 밖에 없기 때문에 0
 			
 			if (item.getMenu_pic() != null && !item.getMenu_pic().equals("")) {
-				File file = new File(realpath + item.getMenu_pic());
+				File file = new File(REALPATH + item.getMenu_pic());
 				if (file.exists()) {
 					if (file.delete()) {// 파일이 있으면 삭제
 						return mapper.delRestRecMenu(param);

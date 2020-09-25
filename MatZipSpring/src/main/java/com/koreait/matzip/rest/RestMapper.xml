@@ -8,11 +8,11 @@
 	
 	<select id="selRestMenus" parameterType="RestPARAM" resultType="RestRecMenuVO">
 	SELECT A.seq, A.menu_pic
-	FROM t_restaurant_menu A
-	WHERE A.i_rest = #{i_rest}
-	<if test="seq > 0">
-	AND A.seq = #{seq}
-	</if>
+		FROM t_restaurant_menu A
+		WHERE A.i_rest = #{i_rest}
+		<if test="seq > 0">
+			AND A.seq = #{seq}
+		</if>
 	</select>
 	
 	<select id="selRestList" parameterType="RestPARAM" resultType="RestDMI">
@@ -93,13 +93,10 @@
 	</delete>
 	
 	<delete id="delRestMenu" parameterType="RestPARAM">
-		DELETE A FROM t_restaurant_menu A
-		INNER JOIN t_restaurant B
-		ON A.i_rest = B.i_rest
-		WHERE B.i_rest = #{i_rest}
-		AND B.i_user = #{i_user}
+		DELETE FROM t_restaurant_menu 
+		WHERE i_rest = #{i_rest}
 		<if test="seq > 0">
-			AND A.seq = #{seq}
+			AND seq = #{seq}
 		</if>
  	</delete>
  	

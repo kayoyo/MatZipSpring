@@ -4,18 +4,11 @@ import com.koreait.matzip.model.RestaurantVO;
 
 public class RestRecMenuVO extends RestaurantVO{
 	
-	private int i_rest;
 	private int seq;
 	private String menu_nm;
 	private int menu_price;
 	private String menu_pic;
 	
-	public int getI_rest() {
-		return i_rest;
-	}
-	public void setI_rest(int i_rest) {
-		this.i_rest = i_rest;
-	}
 	public int getSeq() {
 		return seq;
 	}
