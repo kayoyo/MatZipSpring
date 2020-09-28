@@ -6,6 +6,7 @@ public class Const {
 	public static final String TITLE = "title";
 
 	public static final String LOGIN_USER = "loginUser";
+	public static final String CURRENT_REST_READ_IP = "currentRestReadIp_";
 	
 	public static String REALPATH = null;
 	

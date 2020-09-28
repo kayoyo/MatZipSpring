@@ -41,10 +41,7 @@ public class UserService {
 				return Const.NO_PW;
 			}
 		}
-	
 		
-
-	
 	public int join(UserVO param) {
 		String pw = param.getUser_pw();
 		String salt = SecurityUtils.generateSalt();
@@ -54,6 +51,16 @@ public class UserService {
 		param.setUser_pw(cryptPw);
 		
 		return mapper.insUser(param);
+	}
+	
+	public int ajaxToggleFavorite(UserPARAM param) { //i_user, i_rest, proc_type 담겨 있음
+		switch(param.getProc_type()) {
+		case "ins": 
+			return mapper.insFavorite(param);
+		case "del":
+			return mapper.delFavorite(param);
+		}
+		return 0;
 	}
 
 }

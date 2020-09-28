@@ -52,9 +52,13 @@
 			<div class="restaurant-detail">
 				<div id="detail-header">
 					<div class="restaurant_title_wrap">
-						<span class="title">
-							<h1 class="restaurant_name">${data.nm}</h1>						
-						</span>
+						<h1 class="restaurant_name">${data.nm}</h1>	
+						<c:if test="${loginUser != null}">
+							<span id="favorite" class="material-icons" onclick="toggleFavorite()">
+								<c:if test="${data.is_favorite == 1}">favorite</c:if>
+								<c:if test="${data.is_favorite == 0}">favorite_border</c:if>
+							</span>				
+						</c:if>
 					</div>
 					<div class="status branch_none">
 						<span class="cnt hit">${data.hits}</span>					
@@ -98,6 +102,11 @@
 			<!-- If we need navigation buttons -->
 			<div class="swiper-button-prev"></div>
 			<div class="swiper-button-next"></div>
+			<c:if test="${loginUser.i_user == data.i_user}">
+				<div class="imgDel">
+					<span class="material-icons" onclick="delMenu()">delete</span>		
+				</div>
+			</c:if>
 		</div>
 	</div>
 	<span class="material-icons" onclick="closeCarousel()">clear</span>
@@ -106,6 +115,63 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>
+
+	function toggleFavorite() {
+		//console.log('favorite : ' + favorite.innerText.trim())
+		//console.log('favorite : ' + favorite.innerText.trim() == 'favorite')
+		
+		let parameter = {
+			params: {
+				i_rest: ${data.i_rest}
+			}
+		}
+		
+		var icon = favorite.innerText.trim()
+		
+		switch(icon){
+		case 'favorite': 
+			parameter.params.proc_type = 'del'
+			break;
+		case 'favorite_border': 
+			parameter.params.proc_type = 'ins'
+			break;
+		}
+		
+	//console.log(parameter.params.proc_type)
+		
+		axios.get('/user/ajaxToggleFavorite', parameter).then(function(res){
+			//console.log(res)
+			if(res.data == 1) {
+				favorite.innerText = (icon == 'favorite' ? 'favorite_border' : 'favorite')
+			}
+		})
+	}
+	
+	function delMenu() {
+		if(!confirm('메뉴를 삭제하시겠습니까? 🤣')) {return}
+		const obj = menuList[mySwiper.realIndex] 
+		console.log('index : ' + mySwiper.realIndex)
+		
+		//서버 삭제 요청
+		if(obj != undefined){	
+		axios.get('/rest/ajaxDelMenu', {
+			params: {
+				i_rest: ${data.i_rest},
+				seq: obj.seq,
+				menu_pic: obj.menu_pic
+			}
+		}).then(function(res){
+			//console.log(res)
+			if(res.data == 1){
+				menuList.splice(mySwiper.realIndex, 1)
+				refreshMenu()						
+			} else {
+					alert('메뉴를 삭제 할 수 없습니다 😓')	
+				}
+			})
+		}
+	}
+	
 	
 	function closeCarousel() {
 	carouselContainer.style.opacity = 0
@@ -113,13 +179,12 @@
 	}
 	
 	function openCarousel() {
+		mySwiper.slideTo(idx);
 		carouselContainer.style.opacity = 1
 		carouselContainer.style.zIndex = 40
 	}
 	
-	var mySwiper
-	function makeCarousel() {
-		mySwiper = new Swiper('.swiper-container', {
+		var mySwiper = new Swiper('.swiper-container', {
 			  // Optional parameters
 			  direction: 'horizontal',
 			  loop: true,
@@ -134,12 +199,10 @@
 			    nextEl: '.swiper-button-next',
 			    prevEl: '.swiper-button-prev',
 			  }
-			})
-	}
-	makeCarousel()
-
+		})
 	
 	var menuList = []
+	
 	function ajaxSelMenuList() {
 		axios.get('/rest/ajaxSelMenuList', {
 			params: {
@@ -161,69 +224,44 @@
 	}
 	
 	function makeMenuItem(item, idx){ //forEach가 실행되는 하나하나의 결과를 받음
+		//메인 화면에서 메뉴 이미지 디스플레이 -----------------------------------
 		const div = document.createElement('div')
 		div.setAttribute('class', 'menuItem')
 		
 		const img = document.createElement('img')
 		img.setAttribute('src', `/res/img/rest/${data.i_rest}/menus/\${item.menu_pic}`)
 		img.style.cursor = 'pointer'
-		img.addEventListener('click', openCarousel)
+		img.addEventListener('click', function() {
+			openCarousel(idx + 1)
+		})
 		
-		const swiperDiv = document.createElement('div')
-		swiperDiv.setAttribute('class', 'swiper-slide')
-		
-		const swiperImg = document.createElement('img')
-		swiperImg.setAttribute('src', `/res/img/rest/${data.i_rest}/menus/\${item.menu_pic}`)
-		
-		swiperDiv.append(swiperImg)
-		
-		mySwiper.appendSlide(swiperDiv);
 		
 		div.append(img)
 		
-		<c:if test="${loginUser.i_user == data.i_user}">
-			const delDiv = document.createElement('div')
-			delDiv.setAttribute('class', 'delIconContainer')
-			delDiv.addEventListener('click', function() {
-				if(idx > -1){
-					console.log(item)
-				//서버 삭제 요청
-				axios.get('/rest/ajaxDelMenu', {
-					params: {
-						i_rest: ${data.i_rest},
-						seq: item.seq,
-						menu_pic: item.menu_pic
-					}
-				}).then(function(res){
-					console.log(res)
-					if(res.data == 1){
-						alert('메뉴를 삭제하시겠습니까? 🤣')
-						menuList.splice(idx, 1)
-						refreshMenu()						
-					} else {
-							alert('메뉴를 삭제 할 수 없습니다 😓')	
-						}
-					})
-				}
-			})
-			
-			const span = document.createElement('span')
-			span.setAttribute('class', 'material-icons')
-			span.innerText = 'clear'
-			
-			delDiv.append(span)
-			div.append(delDiv)
-		</c:if>
-		
 			menuBoardList.append(div)
+			//end ---------------------------------------------------------
+			
+			//팝업 화면에서 메뉴 이미지 디스플레이-------------------------
+			const swiperDiv = document.createElement('div')
+			swiperDiv.setAttribute('class', 'swiper-slide')
+			
+			const swiperImg = document.createElement('img')
+			swiperImg.setAttribute('src', `/res/img/rest/${data.i_rest}/menus/\${item.menu_pic}`)
+			
+			swiperDiv.append(swiperImg)
+			
+			mySwiper.appendSlide(swiperDiv);
+			
 	}
+	
+	//end ---------------------------------------------------------
 	
 	<c:if test="${loginUser.i_user == data.i_user}">
 	function delRecMenu(seq) {
 		if(!confirm('삭제하시겠습니까?')) {
 			return
 		}	
-		console.log('seq : ' + seq)
+		//console.log('seq : ' + seq)
 		
 		axios.get('/rest/ajaxDelRecMenu', {
 			params: {

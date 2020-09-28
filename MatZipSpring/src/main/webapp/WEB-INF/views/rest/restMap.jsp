@@ -6,6 +6,8 @@
 		.label .left {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_l.png") no-repeat;display: inline-block;height: 24px;overflow: hidden;vertical-align: top;width: 7px;}
 		.label .center {background: url(https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_bg.png) repeat-x;display: inline-block;height: 24px;font-size: 12px;line-height: 24px;}
 		.label .right {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_r.png") -1px 0  no-repeat;display: inline-block;height: 24px;overflow: hidden;width: 6px;}
+		.center {color : #27233d;}
+		
 		</style>
 		
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -43,25 +45,25 @@
 			   const southWest = bounds.getSouthWest() 
 			   const northEast = bounds.getNorthEast()
 			   
-			   console.log('southWest :' + southWest)
-			   console.log('northEast :' + northEast)
+			   //console.log('southWest :' + southWest)
+			   //console.log('northEast :' + northEast)
 			   
 			   const sw_lat = southWest.getLat()
 			   const sw_lng = southWest.getLng()
 			   const ne_lat = northEast.getLat()
 			   const ne_lng = northEast.getLng()
 			   
-			   console.log('sw_lat :' + sw_lat)
-			   console.log('sw_lng :' + sw_lng)
-			   console.log('ne_lat :' + ne_lat)
-			   console.log('ne_lng :' + ne_lng)
+			   //console.log('sw_lat :' + sw_lat)
+			   //console.log('sw_lng :' + sw_lng)
+			   //console.log('ne_lat :' + ne_lat)
+			   //console.log('ne_lng :' + ne_lng)
 			   
 		      axios.get('/rest/ajaxGetList' , {
 				   params: {
 					   sw_lat, sw_lng, ne_lat, ne_lng
 				   }
 			   }).then(function(res) {
-				console.log(res.data)
+				//console.log(res.data)
 				
 		         res.data.forEach(function(item) {
 		            createMarker(item)
@@ -75,19 +77,26 @@
 		   
 		   // 마커 생성 함수
 		   function createMarker(item) {
-		      var content = document.createElement('div');
+		       var content = document.createElement('div');
 		       content.className = 'label';
 		       var leftSpan = document. createElement('span');
 		       leftSpan.className = 'left';
 		       var rightSpan = document. createElement('span');
 		       rightSpan.className = 'right';
 		       var centerSpan = document. createElement('span');
-		       centerSpan.className = 'center';
-		       centerSpan.innerText = item.nm;
+		       centerSpan.className = 'center'
+		       
+		       var restNm = item.nm
+		       
+		       if(item.is_favorite == 1) {
+		    	   restNm += '♥'
+		       }
+		       centerSpan.innerText = restNm
 		
 		       content.append(leftSpan);
 		       content.append(centerSpan);
 		       content.append(rightSpan);
+		      
 		      
 		      var mPos = new kakao.maps.LatLng(item.lat, item.lng);
 				//console.log(mPos);
@@ -138,7 +147,7 @@
 		   
 		   // 내 위치로 지도 이동
 		   if (navigator.geolocation) {
-		      console.log('Geolocation is supported!');
+		      //console.log('Geolocation is supported!');
 		     
 		      var startPos;
 		      navigator.geolocation.getCurrentPosition(function(pos) {
@@ -152,7 +161,7 @@
 		       });
 		     
 		   } else {
-		     console.log('Geolocation is not supported for this Browser/OS.');
+		     //console.log('Geolocation is not supported for this Browser/OS.');
 		   }
 		   // 내 위치로 지도 이동
 		</script>

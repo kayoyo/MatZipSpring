@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +107,24 @@ public class RestService {
 		return mapper.delRestRecMenu(param);
 	}
 	
+	public void addHits(RestPARAM param, HttpServletRequest req) {
+		
+		String myIp = req.getRemoteAddr(); //현재 이 글을 보고 있는 유저의 ip값
+		ServletContext ctx = req.getServletContext(); //application은 공용(서버당 1개 생성)
+		
+		int i_user = SecurityUtils.getLoginUserPk(req);
+		
+		
+		String currentRestReadIp = (String)ctx.getAttribute(Const.CURRENT_REST_READ_IP + param.getI_rest());
+		if(currentRestReadIp == null || !currentRestReadIp.equals(myIp)) {
+			
+			param.setI_user(i_user); //내가 쓴 글이면 조회수 올라가지 않게 함(where절 부분)
+			mapper.updAddHits(param);
+			
+			ctx.setAttribute(Const.CURRENT_REST_READ_IP + param.getI_rest(), myIp);
+			
+		}
+	}
 	
 	public int insRest(RestPARAM param) {
 		
