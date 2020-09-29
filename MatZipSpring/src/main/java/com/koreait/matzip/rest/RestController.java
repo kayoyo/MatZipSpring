@@ -90,11 +90,11 @@ public class RestController {
 		//변화하는 값만 넣어줌
 		
 		List<RestRecMenuVO> recMenuList = service.selRecMenuList(param);
-		String[] css = {"restaurant", "swiper-bundle.min"};
+		String[] restDetail = {"restaurant", "swiper-bundle.min"};
 		
 		//model.addAttribute("menuList", service.selRestMenus(param));
 		model.addAttribute("recMenuList", recMenuList);
-		model.addAttribute("css", css);
+		model.addAttribute(Const.CSS, restDetail);
 		model.addAttribute("data", data);
 		model.addAttribute(Const.TITLE, data.getNm());
 		model.addAttribute(Const.VIEW, "rest/restDetail");

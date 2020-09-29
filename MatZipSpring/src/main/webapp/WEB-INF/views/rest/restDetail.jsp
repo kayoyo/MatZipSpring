@@ -61,8 +61,8 @@
 						</c:if>
 					</div>
 					<div class="status branch_none">
-						<span class="cnt hit">${data.hits}</span>					
 						<span class="cnt favorite">${data.cnt_favorite}</span>
+						<!--  <span class="cnt hit">${data.hits}</span>-->					
 					</div>
 				</div>
 				<div>
@@ -76,6 +76,10 @@
 							<tr>
 								<th>카테고리</th>
 								<td>${data.cd_category_nm}</td>
+							</tr>
+							<tr>
+								<th>조회수</th>
+								<td>${data.hits}</td>
 							</tr>
 							<tr>
 								<th>메뉴</th>
