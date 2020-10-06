@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 .container {
-	width: 1200px;
+	width: 1000px;
 	margin: 0 auto;
 	position: relative;
 }
@@ -9,6 +9,7 @@
 .f-item:not(:first-child){ 
 	margin-top: 10px;
 	border-top: 1px solid black;
+	
 } 
 
 .f-item {
@@ -20,31 +21,47 @@
 
 .f-item .img {
 	width: 300px;
-	background-color: rgba(159,115,115,0.3);
+	overflow-y: hidden;
 }
 
 .f-item .img img {
 	width: 100%;
-	overflow: hidden;
 }
 
 .f-item .ctnt {
 	display: flex;
 	flex-grow: 1; 
 	flex-direction: column;
+	background-color: rgba(159,115,115,0.1);
 }
 
 .f-item .ctnt .top {
 	display: flex;
-	height: 100px;
-	background-color: rgba(159,115,115, 0.6);
-	padding: 5px 5px 5px 30px; 
+    height: 100px;
+    padding: 5px 5px 5px 30px;
 }
 
-.f-item .ctnt .bottom {
-	flex-grow: 1; 
-	background-color: rgba(159,115,115,0.9);
+.f-item .ctnt .bottom {	
+	overflow-x: hidden;
+	flex-grow: 1;
+	display: flex;
+	margin-left: 30px;	
 }
+
+.f-item .ctnt .bottom .recMenuItem {
+	width: 110px;
+	margin-right: 10px;
+}
+
+
+.f-item .ctnt .bottom .recMenuItem .pic {
+	width: 100%;
+}
+
+.f-item .ctnt .bottom .recMenuItem img {
+	width: 100%;
+}
+
 
 .f-item .ctnt .top .f-title{
 	flex-grow: 1; 
@@ -59,13 +76,7 @@
 }
 
 .f-item .ctnt .top .f-fav{
-	width: 100px;	
+	width: 100px;
+	text-align: right;	
 }
 
-.f-item .ctnt .f-title{
-	flex-grow: 1; 
-}
-
-.f-item .ctnt .f-fav{
-	width: 100px; 
-}

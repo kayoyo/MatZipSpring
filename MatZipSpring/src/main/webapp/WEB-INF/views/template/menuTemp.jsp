@@ -43,7 +43,7 @@
 			<c:if test="${loginUser == null}">
 				<a class="reg" href="#" onclick="alert('로그인이 필요합니다😍')">등록</a>
 			</c:if>
-			<a class="zzim" href="/user/restFavolate">좋아요</a>
+			<a class="zzim" href="/user/favorite">좋아요</a>
 		</div>
 	</header>
 	<section>
